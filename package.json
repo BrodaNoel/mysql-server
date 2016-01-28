@@ -1,6 +1,6 @@
 {
   "name": "mysql-server",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "MySQL standalone/isolated/portable server",
   "main": "index.js",
   "scripts": {

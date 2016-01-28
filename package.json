@@ -1,0 +1,30 @@
+{
+  "name": "mysql-server",
+  "version": "0.0.1",
+  "description": "MySQL standalone/isolated/portable server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrodaNoel/mysql-server.git"
+  },
+  "keywords": [
+    "mysql",
+    "mysqld",
+    "mariadb",
+    "database",
+    "db",
+    "isolated",
+    "portable",
+    "standalone",
+    "server"
+  ],
+  "author": "Broda Noel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BrodaNoel/mysql-server/issues"
+  },
+  "homepage": "https://github.com/BrodaNoel/mysql-server#readme"
+}

@@ -1,33 +1,92 @@
 var fs = require('fs'),
 	zip = require('machinepack-zip');
 
-module.exports = {
+var mysqlServer = {
 	humans: 'Only Broda Noel :(',
 	
-	init: function(){
+	unzip: function(ok, err){
 		// Unzip xampp
+		console.log('First run... Installing...');
 		zip.unzip({
 			source: './lib/xampp.zip',
 			destination: './lib'
 		}).exec({
 			error: function(data) {
+				console.log('Unzip done with errors');
 				console.log(data);
+
+				if(typeof err === 'function')
+					err();
 			},
 			success: function() {
-				// New my.ini
-				fs.createReadStream('./lib/xampp/mysql/bin/my.ini.backup').pipe(fs.createWriteStream('./lib/xampp/mysql/bin/my.ini'));
+				console.log('Unzip done successfuly');
 
-				// Replace all #FULLDIR# for ".";
-				fs.readFile('./lib/xampp/mysql/bin/my.ini', 'utf8', function (err, data) {
-					if (err) return console.log(err);
+				console.log('Removing zip file');
+				fs.unlinkSync('./lib/xampp.zip');
 
-					var result = data.replace(/#FULLDIR#/g, __dirname);
-
-					fs.writeFile('./lib/xampp/mysql/bin/my.ini', result, 'utf8', function (err) {
-						if (err) return console.log(err);
-					});
-				});
+				if(typeof ok === 'function')
+					ok();
 			}
+		});
+	},
+
+	initConfig: function(params) {
+		// New my.ini
+		console.log('Copy base configuration');
+		fs.createReadStream('./lib/xampp/mysql/bin/my.ini.backup').pipe(fs.createWriteStream('./lib/xampp/mysql/bin/my.ini'));
+
+		fs.readFile('./lib/xampp/mysql/bin/my.ini', 'utf8', function (err, data) {
+			if (err) return console.log(err);
+
+			// Replace all #FULLDIR# for ".";
+			var result = data.replace(/#FULLDIR#/g, __dirname);
+
+			fs.writeFile('./lib/xampp/mysql/bin/my.ini', result, 'utf8', function (err) {
+				if (err) return console.log(err);
+			});
+		});
+	},
+
+	start: function() {
+		try {
+			fs.accessSync('./lib/xampp.zip', fs.F_OK);
+
+			mysqlServer.unzip(function(){
+				mysqlServer.initConfig();
+				mysqlServer.run();
+			});
+
+		} catch (e) {
+			mysqlServer.run();
+		}
+	},
+
+	stop: function() {
+		console.log('Stopping MySQL instance');
+		const exec = require('child_process').exec;
+		const child = exec('call ./lib/xampp/mysql_stop.bat', function (error, stdout, stderr) {
+			if (error) {
+				console.log('ERROR stopping!');
+				throw error;
+			}
+			console.log('stdout', stdout);
+			console.log('stderr', stderr);
+		});
+	},
+
+	run: function(){
+		console.log('Running MySQL instance');
+		console.log('Ctrl + C to stop');
+		const exec = require('child_process').exec;
+		const child = exec('call ./lib/xampp/mysql_start.bat', function (error, stdout, stderr) {
+			if (error) {
+				console.log('ERROR!');
+				throw error;
+			}
+			console.log('stdout', stdout);
+			console.log('stderr', stderr);
 		});
 	}
 };
+
+module.exports = mysqlServer;

@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/BrodaNoel/mysql-server/issues"
   },
-  "homepage": "https://github.com/BrodaNoel/mysql-server#readme"
+  "homepage": "https://github.com/BrodaNoel/mysql-server#readme",
+  "dependencies": {
+    "replace-in-file": "^1.0.0"
+  }
 }

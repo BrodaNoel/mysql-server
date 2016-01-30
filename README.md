@@ -1,3 +1,9 @@
+### New features?
+Yes, but inly if you request it using GitHub.
+Right now, I really have no time to create all the stuffs that this package should has. For instance: A configuration file to define port, default username, password, db initialization, backups, etc etc etc.
+
+If you need something quickly, just create a new issue in https://github.com/BrodaNoel/mysql-server, and I gonna work on it.
+
 **Usage**:
 
 ```javascript

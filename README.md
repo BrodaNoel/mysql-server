@@ -1,18 +1,15 @@
-I'm on it... Just wait a couple of days...
-(last update: 29/01/2016)
+**Usage**:
 
-Usage:
-
-```
-var mysqlServer = require('mysql-server');
-mysqlServer.start();
+```javascript
+	var mysqlServer = require('mysql-server');
+	mysqlServer.start();
 ```
 
-```
-var mysqlServer = require('mysql-server');
-mysqlServer.stop();
+```javascript
+	var mysqlServer = require('mysql-server');
+	mysqlServer.stop();
 ```
 
-!IMPORTANT!
-`start` function is synchronous. So, will keep your prompt until kill it pressing Ctrl + C
+##### IMPORTANT!
+`start` function is synchronous. So, it will keep your prompt until kill it pressing Ctrl + C (or calling `stop` function)
 `start` function will take a couple of seconds in the first execution, just because it has to unzip all MySQL.

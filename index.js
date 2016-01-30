@@ -8,8 +8,8 @@ var mysqlServer = {
 		// Unzip xampp
 		console.log('First run... Installing...');
 		zip.unzip({
-			source: './lib/xampp.zip',
-			destination: './lib'
+			source: __dirname + '/lib/xampp.zip',
+			destination: __dirname + '/lib'
 		}).exec({
 			error: function(data) {
 				console.log('Unzip done with errors');
@@ -22,7 +22,7 @@ var mysqlServer = {
 				console.log('Unzip done successfuly');
 
 				console.log('Removing zip file');
-				fs.unlinkSync('./lib/xampp.zip');
+				fs.unlinkSync(__dirname + '/lib/xampp.zip');
 
 				if(typeof ok === 'function')
 					ok();
@@ -33,15 +33,15 @@ var mysqlServer = {
 	initConfig: function(params) {
 		// New my.ini
 		console.log('Copy base configuration');
-		fs.createReadStream('./lib/xampp/mysql/bin/my.ini.backup').pipe(fs.createWriteStream('./lib/xampp/mysql/bin/my.ini'));
+		fs.createReadStream(__dirname + '/lib/xampp/mysql/bin/my.ini.backup').pipe(fs.createWriteStream(__dirname + '/lib/xampp/mysql/bin/my.ini'));
 
-		fs.readFile('./lib/xampp/mysql/bin/my.ini', 'utf8', function (err, data) {
+		fs.readFile(__dirname + '/lib/xampp/mysql/bin/my.ini', 'utf8', function (err, data) {
 			if (err) return console.log(err);
 
 			// Replace all #FULLDIR# for ".";
 			var result = data.replace(/#FULLDIR#/g, __dirname);
 
-			fs.writeFile('./lib/xampp/mysql/bin/my.ini', result, 'utf8', function (err) {
+			fs.writeFile(__dirname + '/lib/xampp/mysql/bin/my.ini', result, 'utf8', function (err) {
 				if (err) return console.log(err);
 			});
 		});
@@ -49,7 +49,7 @@ var mysqlServer = {
 
 	start: function() {
 		try {
-			fs.accessSync('./lib/xampp.zip', fs.F_OK);
+			fs.accessSync(__dirname + '/lib/xampp.zip', fs.F_OK);
 
 			mysqlServer.unzip(function(){
 				mysqlServer.initConfig();
@@ -64,7 +64,7 @@ var mysqlServer = {
 	stop: function() {
 		console.log('Stopping MySQL instance');
 		const exec = require('child_process').exec;
-		const child = exec('call ./lib/xampp/mysql_stop.bat', function (error, stdout, stderr) {
+		const child = exec('call ' + __dirname + '/lib/xampp/mysql_stop.bat', function (error, stdout, stderr) {
 			if (error) {
 				console.log('ERROR stopping!');
 				throw error;
@@ -78,7 +78,7 @@ var mysqlServer = {
 		console.log('Running MySQL instance');
 		console.log('Ctrl + C to stop');
 		const exec = require('child_process').exec;
-		const child = exec('call ./lib/xampp/mysql_start.bat', function (error, stdout, stderr) {
+		const child = exec('call ' + __dirname + '/lib/xampp/mysql_start.bat', function (error, stdout, stderr) {
 			if (error) {
 				console.log('ERROR!');
 				throw error;

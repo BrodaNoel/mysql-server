@@ -39,7 +39,7 @@ var mysqlServer = {
 			if (err) return console.log(err);
 
 			// Replace all #FULLDIR# for ".";
-			var result = data.replace(/#FULLDIR#/g, __dirname);
+			var result = data.replace(/#FULLDIR#/g, __dirname.replace(/\\/g, '/'));
 
 			fs.writeFile(__dirname + '/lib/xampp/mysql/bin/my.ini', result, 'utf8', function (err) {
 				if (err) return console.log(err);
